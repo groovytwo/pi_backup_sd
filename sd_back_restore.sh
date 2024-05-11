@@ -43,7 +43,6 @@ backup_sd_card() {
     echo "Backup compressed to $backup_path.gz"
 }
 
-# Function to restore SD Card
 restore_sd_card() {
     select_drive
     confirm_operation
@@ -52,6 +51,18 @@ restore_sd_card() {
     if [ ! -z "$input_image_path" ]; then
         image_path=$input_image_path
     fi
+
+    # Check if the drive is mounted and unmount it if necessary
+    echo "Checking if $SELECTED_DRIVE is mounted..."
+    if mount | grep -q $SELECTED_DRIVE; then
+        echo "$SELECTED_DRIVE is mounted. Unmounting..."
+        diskutil unmountDisk $SELECTED_DRIVE
+        if [ $? -ne 0 ]; then
+            echo "Failed to unmount $SELECTED_DRIVE. Please manually unmount and try again."
+            exit 1
+        fi
+    fi
+
     echo "Restoring $image_path to $SELECTED_DRIVE..."
     gunzip -c $image_path | sudo dd bs=4M of=$SELECTED_DRIVE status=progress
     echo "Restore completed."
