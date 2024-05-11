@@ -96,6 +96,3 @@ For more information and updates, visit the [PiShrink GitHub page](https://githu
 
 #### Note:
 Always ensure you have a backup of your original image file before using PiShrink or any modification tools to avoid accidental data loss.
-```
-
-- **Accidental Exit:** If you do not confirm with `yes` at the confirmation step, the script will exit to prevent unintended operations.
